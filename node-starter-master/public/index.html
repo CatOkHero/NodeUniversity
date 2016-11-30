@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Runnable Starter Application</title>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="content">
+    </div>
+    <script type="text/babel">
+      var git = {}
+
+      class App extends React.Component {
+
+        constructor (props) {
+          super(props)
+          this.state = {
+            lastCommitAuthor: '...',
+            lastCommitMessage: '...',
+            lastCommitTime: '...',
+            name: '...',
+            remoteOriginUrl: '...',
+            sHA: '...',
+            shortSHA: '...'
+          }
+        }
+
+        componentWillMount () {
+          fetch('/git', { method: 'get' })
+            .then((res) => {
+              return res.json()
+            })
+            .then((data) => {
+              this.setState(data)
+            })
+            .catch((err) => {
+              console.log('Error: ' + err)
+            })
+        }
+
+        render () {
+          return (
+            <div>
+              <section>
+                <h1>Hello World!</h1>
+                <h2>Your web application is running!</h2>
+                <p>Make a commit to see your changes show up below.</p>
+              </section>
+              <section>
+                <p>Current branch: <b>{ this.state.name }</b></p>
+                <p>Commit: <b>{ this.state.shortSHA }</b></p>
+                <p>Commit author: <b>{ this.state.lastCommitAuthor }</b></p>
+              </section>
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(
+        (<App />), document.getElementById('content')
+      )
+    </script>
+  </body>
+</html>
